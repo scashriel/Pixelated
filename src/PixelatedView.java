@@ -6,7 +6,8 @@ import java.awt.event.MouseListener;
 import java.awt.event.ActionListener;
 
 public class PixelatedView extends JFrame {
-    private JPanel panel, cell;
+    private JPanel panel, panelCell;
+    private Cell cell;
     private JPanel[][] matrix;
     private JButton go;
     private JButton clear;
@@ -23,11 +24,10 @@ public class PixelatedView extends JFrame {
         this.panel.setLayout(new GridLayout(size, size));
         for (int row = 0; row < size; row++){
             for (int col = 0; col < size; col++){
-                JPanel cell = new JPanel();
-                cell.setBorder(BorderFactory.createLineBorder(Color.black));
-                MouseHandler handler = new MouseHandler();
-                cell.addMouseListener(handler);
-                matrix[row][col] = cell;
+                cell = new Cell();
+                panelCell = new JPanel();
+                panelCell.add(cell);
+                matrix[row][col] = panelCell;
                 panel.add(matrix[row][col]);
             }
         }
@@ -53,12 +53,26 @@ public class PixelatedView extends JFrame {
     }
 
 
-    private class MouseHandler extends MouseAdapter{
-        public void mouseClicked(MouseEvent e){
-            setBackground(Color.black);
-            System.out.println("clicked at " + e.getX() + e.getY());
+    private class Cell extends JPanel{
+        private JPanel cell;
+
+        public Cell(){
+            cell = new JPanel();
+            cell.setBorder(BorderFactory.createLineBorder(Color.black));
+            MouseHandler handler = new MouseHandler();
+            cell.addMouseListener(handler);
         }
+
+        private class MouseHandler extends MouseAdapter{
+            public void mouseClicked(MouseEvent e){
+                setBackground(Color.black);
+                System.out.println("clicked at " + e.getX() + e.getY());
+            }
+        }
+
     }
+
+
 
 
 
